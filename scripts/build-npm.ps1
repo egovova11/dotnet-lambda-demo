@@ -1,0 +1,1 @@
+& $Env:npm "run" "build"
