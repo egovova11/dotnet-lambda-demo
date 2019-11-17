@@ -5,4 +5,5 @@ import { DemoDotnet21Stack } from './demo-dotnet21-stack';
 const app = new cdk.App();
 
 const codeBucketName : string = process.env.CODE_BUCKET_NAME!;
-new DemoDotnet21Stack(app, 'DemoDotnet21Stack', {bucketName: codeBucketName});
+const dotnet21functionPackage = process.env.dotnet21functionPackage;
+new DemoDotnet21Stack(app, 'DemoDotnet21Stack', {bucketName: codeBucketName, dotnet21functionPackage});

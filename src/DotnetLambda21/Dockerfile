@@ -13,4 +13,4 @@ RUN dotnet publish -c Release -o /app/out
 # zip executable code
 VOLUME [ "/out" ]
 WORKDIR /app/out
-ENTRYPOINT ["zip", "-r", "/out/dotnetlamda21.zip", "."]
+ENTRYPOINT ["zip", "-r", "/out/dotnetlambda21.zip", "."]

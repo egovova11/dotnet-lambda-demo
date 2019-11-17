@@ -9,6 +9,11 @@
 - docker and docker-compose
 - powershell (for scripts)
 
+## Build & Deploy
+
+1. Modify `./scripts/init-env.ps1` to use your bucket name
+2. run `./scripts/build-synth-deploy.ps1`
+
 ## Troubleshooting
 
 ### docker-compose issues

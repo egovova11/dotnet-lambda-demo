@@ -1,3 +1,4 @@
 export class DemoStackProps{
-    bucketName : string
+    bucketName : string;
+    dotnet21functionPackage? : string;
 }

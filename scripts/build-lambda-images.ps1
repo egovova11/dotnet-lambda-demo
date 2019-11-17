@@ -1,8 +1,7 @@
-
 $initialLocation = Get-Location
+& "$PSScriptRoot\init-env.ps1"
 
-cd "$PSScriptRoot\..\src"
-
-docker-compose up --build
+cd $Env:src_dir
+docker-compose up --build -V
 
 Set-Location $initialLocation
