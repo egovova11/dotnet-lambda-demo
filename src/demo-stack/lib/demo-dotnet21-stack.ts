@@ -13,6 +13,7 @@ export class DemoDotnet21Stack extends cdk.Stack {
 
     const myFunctionId = `${id}-myfunction`;
     const myFunction = new lambda.Function(this, myFunctionId, {
+      functionName: 'node8-hello-world-function',
       runtime: lambda.Runtime.NODEJS_8_10,
       code: lambda.Code.fromInline(`exports.handler = async function(event, ctx) { return { body:JSON.stringify("hello world!"), statusCode: 200}; }`),
       handler: 'index.handler'
