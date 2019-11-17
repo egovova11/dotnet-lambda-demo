@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  dotnetlambda21:
+    build: 
+      context: ./DotnetLambda21
+      dockerfile: Dockerfile
+    volumes:
+       - ./output:/out
