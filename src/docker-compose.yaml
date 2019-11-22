@@ -7,3 +7,10 @@ services:
       dockerfile: Dockerfile
     volumes:
        - ./output:/out
+       
+  dotnetlambda30:
+    build: 
+      context: ./DotnetLambda30
+      dockerfile: Dockerfile
+    volumes:
+       - ./output:/out

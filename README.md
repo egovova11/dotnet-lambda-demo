@@ -14,6 +14,14 @@
 1. Modify `./scripts/init-env.ps1` to use your bucket name
 2. run `./scripts/build-synth-deploy.ps1`
 
+### publish layer
+
+> dotnet lambda publish-layer common-core --package-manifest ./common-core.xml --layer-type runtime-package-store --framework netcoreapp3.0 --s3-bucket malaga-serverless-net-demo --region eu-central-1
+
+## Variables
+
+1. `/malaga-serverless-net-demo/vars/db-connection` - database connection string. AdventureWorksLT2017 schema is expected.
+
 ## Troubleshooting
 
 ### docker-compose issues

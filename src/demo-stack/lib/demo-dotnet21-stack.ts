@@ -21,12 +21,29 @@ export class DemoDotnet21Stack extends cdk.Stack {
       ? appProps.dotnet21functionPackage
       : "code/dotnetlambda21.zip";
 
-    const dotnet21FunctionId = `${id}-myfunction`;
+    const dotnet21FunctionId = `${id}-dotnet21function`;
     const dotnet21Function = new lambda.Function(this, dotnet21FunctionId, {
       functionName: 'dotnet21-hello-world-function',
       runtime: lambda.Runtime.DOTNET_CORE_2_1,
       code: lambda.Code.fromBucket(codeBucket, dotnet21CodeKey),
       handler: 'DotnetLambda21::DotnetLambda21.Function::FunctionHandler'
-    })
+    });
+
+    const layerId = `${id}-layer`
+    const layer = lambda.LayerVersion.fromLayerVersionArn(this, layerId, "arn:aws:lambda:eu-central-1:805763676908:layer:common-core:1");
+
+
+    const dotnet30CodeKey = appProps.dotnet30functionPackage 
+      ? appProps.dotnet30functionPackage
+      : "code/dotnetlambda30.zip";
+
+    const dotnet30FunctionId = `${id}-dotnet30function`;
+    const dotnet30Function = new lambda.Function(this, dotnet30FunctionId, {
+      functionName: 'dotnet30-hello-world-function',      
+      code: lambda.Code.fromBucket(codeBucket, dotnet30CodeKey),
+      handler: 'DotnetLambda30::DotnetLambda30.Function::FunctionHandler',
+      runtime: lambda.Runtime.PROVIDED,
+      layers: [layer]
+    });
   }
 }
