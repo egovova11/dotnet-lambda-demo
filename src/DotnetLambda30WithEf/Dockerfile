@@ -13,4 +13,4 @@ RUN dotnet publish --self-contained true -c Release -o /app/out
 # zip executable code
 VOLUME [ "/out" ]
 WORKDIR /app/out
-ENTRYPOINT ["zip", "-r", "/out/dotnetlambda30.zip", "."]
+ENTRYPOINT ["zip", "-r", "/out/dotnetlambda30withef.zip", "."]

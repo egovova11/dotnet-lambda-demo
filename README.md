@@ -3,9 +3,11 @@
 ## Prerequisites
 
 - Visual Studio 2019 (16.3.6+)
+- .NET Core SDK 2.1
+- .NET Core SDK 3.0
 - npm
 - AWS CDK (1.15.0)
-- AWS CLI (aws2)
+- AWS CLI (aws)
 - docker and docker-compose
 - powershell (for scripts)
 

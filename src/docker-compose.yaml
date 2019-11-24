@@ -14,3 +14,17 @@ services:
       dockerfile: Dockerfile
     volumes:
        - ./output:/out
+
+  dotnetlambda21withef:
+    build: 
+      context: ./DotnetLambda21WithEf
+      dockerfile: Dockerfile
+    volumes:
+       - ./output:/out
+
+  dotnetlambda30withef:
+    build: 
+      context: ./DotnetLambda30WithEf
+      dockerfile: Dockerfile
+    volumes:
+       - ./output:/out

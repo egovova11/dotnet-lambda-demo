@@ -17,8 +17,8 @@ export class DemoDotnet21Stack extends cdk.Stack {
     const codeBucketArn = `arn:aws:s3:::${codeBucketNameParameter.value}`;
     const codeBucket = s3.Bucket.fromBucketArn(this, codeBucketId, codeBucketArn);
 
-    const dotnet21CodeKey = appProps.dotnet21functionPackage 
-      ? appProps.dotnet21functionPackage
+    const dotnet21CodeKey = appProps.dotnet21FunctionPackage 
+      ? appProps.dotnet21FunctionPackage
       : "code/dotnetlambda21.zip";
 
     const dotnet21FunctionId = `${id}-dotnet21function`;
@@ -33,8 +33,8 @@ export class DemoDotnet21Stack extends cdk.Stack {
     const layer = lambda.LayerVersion.fromLayerVersionArn(this, layerId, "arn:aws:lambda:eu-central-1:805763676908:layer:common-core:1");
 
 
-    const dotnet30CodeKey = appProps.dotnet30functionPackage 
-      ? appProps.dotnet30functionPackage
+    const dotnet30CodeKey = appProps.dotnet30FunctionPackage 
+      ? appProps.dotnet30FunctionPackage
       : "code/dotnetlambda30.zip";
 
     const dotnet30FunctionId = `${id}-dotnet30function`;
@@ -42,6 +42,31 @@ export class DemoDotnet21Stack extends cdk.Stack {
       functionName: 'dotnet30-hello-world-function',      
       code: lambda.Code.fromBucket(codeBucket, dotnet30CodeKey),
       handler: 'DotnetLambda30::DotnetLambda30.Function::FunctionHandler',
+      runtime: lambda.Runtime.PROVIDED,
+      layers: [layer]
+    });
+
+    const dotnet21WithEfCodeKey = appProps.dotnet21WithEfFunctionPackage 
+      ? appProps.dotnet21WithEfFunctionPackage
+      : "code/dotnetlambda21withef.zip";
+
+    const dotnet21WithEfFunctionId = `${id}-dotnet21witheffunction`;
+    const dotnet21WithEfFunction = new lambda.Function(this, dotnet21WithEfFunctionId, {
+      functionName: 'dotnet21-with-ef-function',
+      runtime: lambda.Runtime.DOTNET_CORE_2_1,
+      code: lambda.Code.fromBucket(codeBucket, dotnet21WithEfCodeKey),
+      handler: 'DotnetLambda21WithEf::DotnetLambda21WithEf.Function::FunctionHandler'
+    });
+
+    const dotnet30WithEfCodeKey = appProps.dotnet30WithEfFunctionPackage 
+      ? appProps.dotnet30WithEfFunctionPackage
+      : "code/dotnetlambda30withef.zip";
+
+    const dotnet30WithEfFunctionId = `${id}-dotnet30witheffunction`;
+    const dotnet30WithEfFunction = new lambda.Function(this, dotnet30WithEfFunctionId, {
+      functionName: 'dotnet30-with-ef-function',      
+      code: lambda.Code.fromBucket(codeBucket, dotnet30WithEfCodeKey),
+      handler: 'DotnetLambda30WithEf::DotnetLambda30WithEf.Function::FunctionHandler',
       runtime: lambda.Runtime.PROVIDED,
       layers: [layer]
     });

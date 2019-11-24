@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 import cdk = require('@aws-cdk/core');
 import { DemoDotnet21Stack } from './demo-dotnet21-stack';
+import { DemoStackProps } from './demo-stack-props';
 
 const app = new cdk.App();
 
-const codeBucketName : string = process.env.CODE_BUCKET_NAME!;
-const dotnet21functionPackage = process.env.dotnet21functionPackage;
-const dotnet30functionPackage = process.env.dotnet30functionPackage;
+const stackProps : DemoStackProps = {
+    bucketName: process.env.CODE_BUCKET_NAME!, 
+    dotnet21FunctionPackage: process.env.dotnet21functionPackage, 
+    dotnet30FunctionPackage: process.env.dotnet30functionPackage,
+    dotnet21WithEfFunctionPackage: process.env.dotnet21withEfFunctionPackage,
+    dotnet30WithEfFunctionPackage: process.env.dotnet30withEfFunctionPackage
+};
 
-const appProps = {bucketName: codeBucketName, dotnet21functionPackage, dotnet30functionPackage};
-
-new DemoDotnet21Stack(app, 'DemoDotnet21Stack', appProps);
+new DemoDotnet21Stack(app, 'DemoDotnet21Stack', stackProps);
