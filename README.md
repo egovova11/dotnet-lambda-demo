@@ -18,6 +18,14 @@
 
 > dotnet lambda publish-layer common-core --package-manifest ./common-core.xml --layer-type runtime-package-store --framework netcoreapp3.0 --s3-bucket malaga-serverless-net-demo --region eu-central-1
 
+thing above creates something not very usable.
+so, lets try another way
+
+- download `https://dotnetcli.azureedge.net/dotnet/Runtime/3.0.1/dotnet-runtime-3.0.1-linux-x64.tar.gz` (it is from official docker image)
+- untar and zip
+  - and here we need to set correct execution rights for dotnet entry point!
+- push to the layers
+
 ## Variables
 
 1. `/malaga-serverless-net-demo/vars/db-connection` - database connection string. AdventureWorksLT2017 schema is expected.
