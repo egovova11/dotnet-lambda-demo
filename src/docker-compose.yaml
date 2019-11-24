@@ -6,25 +6,28 @@ services:
       context: ./DotnetLambda21
       dockerfile: Dockerfile
     volumes:
-       - ./output:/out
+       - output:/out
        
   dotnetlambda30:
     build: 
       context: ./DotnetLambda30
       dockerfile: Dockerfile
     volumes:
-       - ./output:/out
+       - output:/out
 
   dotnetlambda21withef:
     build: 
       context: ./DotnetLambda21WithEf
       dockerfile: Dockerfile
     volumes:
-       - ./output:/out
+       - output:/out
 
   dotnetlambda30withef:
     build: 
       context: ./DotnetLambda30WithEf
       dockerfile: Dockerfile
     volumes:
-       - ./output:/out
+       - output:/out
+
+volumes: 
+  output:
