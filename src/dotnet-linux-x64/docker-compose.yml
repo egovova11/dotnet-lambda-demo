@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  dotnet30layer:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+       - ./output:/out
