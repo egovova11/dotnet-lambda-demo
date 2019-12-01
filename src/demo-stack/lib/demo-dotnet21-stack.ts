@@ -29,10 +29,6 @@ export class DemoDotnet21Stack extends cdk.Stack {
       handler: 'DotnetLambda21::DotnetLambda21.Function::FunctionHandler'
     });
 
-    const layerId = `${id}-layer`
-    const layer = lambda.LayerVersion.fromLayerVersionArn(this, layerId, "arn:aws:lambda:eu-central-1:805763676908:layer:common-core:1");
-
-
     const dotnet30CodeKey = appProps.dotnet30FunctionPackage 
       ? appProps.dotnet30FunctionPackage
       : "code/dotnetlambda30.zip";
@@ -43,7 +39,6 @@ export class DemoDotnet21Stack extends cdk.Stack {
       code: lambda.Code.fromBucket(codeBucket, dotnet30CodeKey),
       handler: 'DotnetLambda30::DotnetLambda30.Function::FunctionHandler',
       runtime: lambda.Runtime.PROVIDED,
-      layers: [layer]
     });
 
     const dotnet21WithEfCodeKey = appProps.dotnet21WithEfFunctionPackage 
@@ -67,8 +62,7 @@ export class DemoDotnet21Stack extends cdk.Stack {
       functionName: 'dotnet30-with-ef-function',      
       code: lambda.Code.fromBucket(codeBucket, dotnet30WithEfCodeKey),
       handler: 'DotnetLambda30WithEf::DotnetLambda30WithEf.Function::FunctionHandler',
-      runtime: lambda.Runtime.PROVIDED,
-      layers: [layer]
+      runtime: lambda.Runtime.PROVIDED
     });
   }
 }

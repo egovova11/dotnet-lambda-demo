@@ -14,7 +14,7 @@ COPY ./DotnetLambda21.Tests/*.csproj ./DotnetLambda21.Tests/
 RUN dotnet restore ./DotnetLambda21.Tests/DotnetLambda21.Tests.csproj
 COPY ./DotnetLambda21.Tests/ ./DotnetLambda21.Tests/
 RUN dotnet build ./DotnetLambda21.Tests/DotnetLambda21.Tests.csproj --configuration Release
-ENTRYPOINT dotnet test ./DotnetLambda21.Tests/DotnetLambda21.Tests.csproj --configuration Release --no-restore --no-build --logger "trx;logfilename=/out/dotnet21.trx"
+ENTRYPOINT dotnet test ./DotnetLambda21.Tests/DotnetLambda21.Tests.csproj --configuration Release --no-restore --no-build --logger "trx;logfilename=/out/dotnetlambda21.trx"
 
 FROM build-env as publish
 RUN dotnet publish ./DotnetLambda21/DotnetLambda21.csproj -c Release -o /app/out

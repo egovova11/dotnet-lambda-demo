@@ -15,7 +15,7 @@
     "function-timeout"     : 30,
     "function-handler"     : "not_required_for_custom_runtime",
     "msbuild-parameters"   : "--self-contained true",
-    "function-name"        : "dotne30-test-function1",
+    "function-name"        : "dotnet30-hello-world",
     "function-role"        : "arn:aws:iam::805763676908:role/lambda_exec_dotne30-test-function",
     "tracing-mode"         : "PassThrough",
     "environment-variables" : ""

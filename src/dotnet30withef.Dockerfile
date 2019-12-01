@@ -14,10 +14,10 @@ COPY ./DotnetLambda30WithEf.Tests/*.csproj ./DotnetLambda30WithEf.Tests/
 RUN dotnet restore ./DotnetLambda30WithEf.Tests/DotnetLambda30WithEf.Tests.csproj
 COPY ./DotnetLambda30WithEf.Tests/ ./DotnetLambda30WithEf.Tests/
 RUN dotnet build ./DotnetLambda30WithEf.Tests/DotnetLambda30WithEf.Tests.csproj --configuration Release
-ENTRYPOINT dotnet test ./DotnetLambda30WithEf.Tests/DotnetLambda30WithEf.Tests.csproj --configuration Release --no-restore --no-build --logger "trx;LogFileName=/out/dotnet21.trx"
+ENTRYPOINT dotnet test ./DotnetLambda30WithEf.Tests/DotnetLambda30WithEf.Tests.csproj --configuration Release --no-restore --no-build --logger "trx;LogFileName=/out/dotnetlambda30withef.trx"
 
 FROM build-env as publish
-RUN dotnet publish ./DotnetLambda30WithEf/DotnetLambda30WithEf.csproj --self-contained true -c Release -o /app/out
+RUN dotnet publish ./DotnetLambda30WithEf/DotnetLambda30WithEf.csproj -r rhel.7-x64 --self-contained true -c Release -o /app/out
 
 # zip executable code
 WORKDIR /app/out
