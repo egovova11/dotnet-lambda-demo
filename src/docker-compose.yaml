@@ -3,13 +3,15 @@ version: "3.7"
 services:
   dotnetlambda21:
     build: 
-      context: ./DotnetLambda21
-      dockerfile: Dockerfile
+      target: publish
+      context: .
+      dockerfile: dotnet21.Dockerfile
     volumes:
        - ./output:/out
        
   dotnetlambda30:
     build: 
+      target: publish
       context: ./DotnetLambda30
       dockerfile: Dockerfile
     volumes:
@@ -17,6 +19,7 @@ services:
 
   dotnetlambda21withef:
     build: 
+      target: publish
       context: ./DotnetLambda21WithEf
       dockerfile: Dockerfile
     volumes:
@@ -24,6 +27,7 @@ services:
 
   dotnetlambda30withef:
     build: 
+      target: publish
       context: ./DotnetLambda30WithEf
       dockerfile: Dockerfile
     volumes:
