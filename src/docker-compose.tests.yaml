@@ -10,9 +10,27 @@ services:
       target: tests
 
   dotnetlambda21withef:
+    networks: 
+      - sqlnetwork
+    depends_on: 
+      - adventureworks
     build: 
       target: tests
 
   dotnetlambda30withef:
+    networks: 
+      - sqlnetwork
+    depends_on: 
+      - adventureworks
     build: 
       target: tests
+
+  adventureworks:
+    networks: 
+      - sqlnetwork
+    ports: 
+      - 8085:1433
+    image: awlt2017_image
+
+networks: 
+  sqlnetwork:

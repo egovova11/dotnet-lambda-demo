@@ -28,6 +28,18 @@ so, lets try another way
   - and here we need to set correct execution rights for dotnet entry point!
 - push to the layers
 
+### build database image
+
+> git clone https://github.com/egovova11/mssql-server-samplesdb sqlserverimage
+> cd sqlserverimage
+> git checkout adventureworkslt2017
+> docker-compose -f .\docker-compose.sql2017.yml build
+> docker-compose -f .\docker-compose.sql2017.yml up
+
+in different console do
+
+> docker commit sql_server_base awlt2017_image
+
 ## Variables
 
 1. `/malaga-serverless-net-demo/vars/db-connection` - database connection string. AdventureWorksLT2017 schema is expected.
