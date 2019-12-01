@@ -12,23 +12,23 @@ services:
   dotnetlambda30:
     build: 
       target: publish
-      context: ./DotnetLambda30
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: dotnet30.Dockerfile
     volumes:
        - ./output:/out
 
   dotnetlambda21withef:
     build: 
       target: publish
-      context: ./DotnetLambda21WithEf
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: dotnet21withef.Dockerfile
     volumes:
        - ./output:/out
 
   dotnetlambda30withef:
     build: 
       target: publish
-      context: ./DotnetLambda30WithEf
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: dotnet30withef.Dockerfile
     volumes:
        - ./output:/out
