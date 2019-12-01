@@ -21,4 +21,8 @@ RUN dotnet publish ./DotnetLambda30WithEf/DotnetLambda30WithEf.csproj -r rhel.7-
 
 # zip executable code
 WORKDIR /app/out
+# fix issue with line endings if any
+RUN sed -i $'s/\r$//' ./bootstrap
+# allow execution
+RUN chmod +x ./DotnetLambda30WithEf
 ENTRYPOINT ["zip", "-r", "/out/dotnetlambda30withef.zip", "."]
