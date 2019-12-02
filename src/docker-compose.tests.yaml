@@ -11,26 +11,21 @@ services:
 
   dotnetlambda21withef:
     networks: 
-      - sqlnetwork
-    depends_on: 
+      - env_network
+    external_links:
       - adventureworks
     build: 
       target: tests
 
   dotnetlambda30withef:
     networks: 
-      - sqlnetwork
-    depends_on: 
+      - env_network
+    external_links:
       - adventureworks
     build: 
       target: tests
 
-  adventureworks:
-    networks: 
-      - sqlnetwork
-    ports: 
-      - 8085:1433
-    image: awlt2017_image
-
 networks: 
-  sqlnetwork:
+  env_network:
+    external: 
+      name: external_services
