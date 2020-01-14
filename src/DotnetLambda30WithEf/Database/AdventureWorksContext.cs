@@ -4,8 +4,8 @@ namespace DotnetLambda30WithEf.Database
 {
     public class AdventureWorksContext : DbContext
     {
-        public AdventureWorksContext()
-            : base()
+        public AdventureWorksContext(DbContextOptions dbContextOptions)
+            : base(dbContextOptions)
         {
         }
 
@@ -19,9 +19,12 @@ namespace DotnetLambda30WithEf.Database
         public virtual DbSet<ProductModelProductDescription> ProductModelProductDescriptions { get; set; }
         public virtual DbSet<SalesOrderDetail> SalesOrderDetails { get; set; }
         public virtual DbSet<SalesOrderHeader> SalesOrderHeaders { get; set; }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CustomerAddress>()
+                .HasKey(x => new { x.AddressID, x.CustomerID });
+
             modelBuilder.Entity<Address>()
                 .HasMany(e => e.CustomerAddresses)
                 .WithOne(e => e.Address);
@@ -55,23 +58,23 @@ namespace DotnetLambda30WithEf.Database
             modelBuilder.Entity<Product>()
                 .Property(e => e.StandardCost)
                 .HasColumnType("money");
-                //.HasPrecision(19, 4);
+            //.HasPrecision(19, 4);
 
-                modelBuilder.Entity<Product>()
-                    .Property(e => e.ListPrice)
-                    .HasColumnType("money");
-                //.HasPrecision(19, 4);
+            modelBuilder.Entity<Product>()
+                .Property(e => e.ListPrice)
+                .HasColumnType("money");
+            //.HasPrecision(19, 4);
 
             modelBuilder.Entity<Product>()
                 .Property(e => e.Weight).HasColumnType("numeric(8,2)");
-                //.HasPrecision(8, 2);
+            //.HasPrecision(8, 2);
 
-                modelBuilder.Entity<Product>()
-                    .HasMany(e => e.SalesOrderDetails)
-                    .WithOne(e => e.Product);
+            modelBuilder.Entity<Product>()
+                .HasMany(e => e.SalesOrderDetails)
+                .WithOne(e => e.Product);
 
-                modelBuilder.Entity<ProductCategory>()
-                    .HasMany(e => e.ProductCategory1);
+            modelBuilder.Entity<ProductCategory>()
+                .HasMany(e => e.ProductCategory1);
 
             modelBuilder.Entity<ProductDescription>()
                 .HasMany(e => e.ProductModelProductDescriptions)
@@ -82,8 +85,14 @@ namespace DotnetLambda30WithEf.Database
                 .WithOne(e => e.ProductModel);
 
             modelBuilder.Entity<ProductModelProductDescription>()
+                .HasKey(x => new { x.ProductDescriptionID, x.ProductModelID });
+
+            modelBuilder.Entity<ProductModelProductDescription>()
                 .Property(e => e.Culture)
                 .IsFixedLength();
+
+            modelBuilder.Entity<SalesOrderDetail>()
+                .HasKey(x => new { x.SalesOrderID, x.SalesOrderDetailID });
 
             modelBuilder.Entity<SalesOrderDetail>()
                 .Property(e => e.UnitPrice)
@@ -97,7 +106,7 @@ namespace DotnetLambda30WithEf.Database
 
             modelBuilder.Entity<SalesOrderDetail>()
                 .Property(e => e.LineTotal).HasColumnType("numeric(38,6)");
-                //.HasPrecision(38, 6);
+            //.HasPrecision(38, 6);
 
             modelBuilder.Entity<SalesOrderHeader>()
                 .Property(e => e.CreditCardApprovalCode)

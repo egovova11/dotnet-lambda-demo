@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotnetLambda30WithEf.Database
 {
-    [Table("SalesLT.Product")]
+    [Table("Product", Schema = "SalesLT")]
     public class Product
     {
         public Product()

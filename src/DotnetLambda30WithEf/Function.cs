@@ -2,9 +2,9 @@ using Amazon.Lambda.Core;
 using Amazon.Lambda.RuntimeSupport;
 using Amazon.Lambda.Serialization.Json;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
-using Amazon.Extensions.NETCore.Setup;
-using Microsoft.Extensions.Configuration;
+using DotnetLambda30WithEf.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DotnetLambda30WithEf
@@ -15,29 +15,28 @@ namespace DotnetLambda30WithEf
         /// The main entry point for the custom runtime.
         /// </summary>
         /// <param name="args"></param>
-        private static async Task Main(string[] args)
+        internal static async Task Main(string[] args)
         {
-            var configurationBuilder = new ConfigurationBuilder()
-                .AddSystemsManager("", new AWSOptions(){})
-            var function = new Function(CommonServiceProvider.Value);
-            Func<string, ILambdaContext, string> func = function.FunctionHandler;
-
-
+            var function = new Function();
+            Func<string, ILambdaContext, Task<string>> func = function.FunctionHandler;
             using var handlerWrapper = HandlerWrapper.GetHandlerWrapper(func, new JsonSerializer());
             using var bootstrap = new LambdaBootstrap(handlerWrapper);
             await bootstrap.RunAsync();
         }
 
         /// <summary>
-        /// A simple function that takes a string and does a ToUpper
+        /// Function performs lookup of a customer by provided input string
         /// </summary>
         /// <param name="input"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public string FunctionHandler(string input, ILambdaContext context)
+        public async Task<string> FunctionHandler(string input, ILambdaContext context)
         {
-            using var scope = ServiceProvider.CreateScope();
-            return input?.ToUpper();
+            var serviceProvider = ServiceProvider.Value;
+            using var scope = serviceProvider.CreateScope();
+            var service = scope.ServiceProvider.GetRequiredService<ICustomerSearchService>();
+            var customer = await service.FindCustomerAsync(input, CancellationToken.None);
+            return $"Customer search result: {customer?.CustomerID} {customer?.FirstName} {customer?.LastName}";
         }
     }
 }

@@ -4,15 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotnetLambda30WithEf.Database
 {
-    [Table("SalesLT.ProductModelProductDescription")]
+    [Table("ProductModelProductDescription", Schema = "SalesLT")]
     public class ProductModelProductDescription
     {
-        [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ProductModelID { get; set; }
 
-        [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ProductDescriptionID { get; set; }

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotnetLambda30WithEf.Database
 {
-    [Table("SalesLT.SalesOrderHeader")]
+    [Table("SalesOrderHeader", Schema = "SalesLT")]
     public class SalesOrderHeader
     {
         public SalesOrderHeader()
