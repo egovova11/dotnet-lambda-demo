@@ -22,7 +22,7 @@
       "launchBrowser": true,
       "launchUrl": "invoke?input=Adams",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "localhost"
       },
       "applicationUrl": "http://localhost:5000"
     },
@@ -30,6 +30,9 @@
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/invoke?input=Adams",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "docker"
+      },
       "httpPort": 61408
     }
   }

@@ -6,6 +6,7 @@ cd $Env:src_dir
 
 # delete older files
 rm ./output/*.trx
+# execute tests
 docker-compose -f ./docker-compose.yaml -f ./docker-compose.tests.yaml up --build
 
 & "$PSScriptRoot\destroy-test-env.ps1"

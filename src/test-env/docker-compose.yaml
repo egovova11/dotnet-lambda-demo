@@ -14,6 +14,22 @@ services:
     build: 
       context: .\temp\sqlserverimage\
       dockerfile: Dockerfile
+  
+  awslocalstack:
+    container_name: awslocalstack
+    image: localstack/localstack
+    ports:
+      - 4583:4583
+      - "${PORT_WEB_UI-8080}:${PORT_WEB_UI-8080}"
+    networks: 
+      - env_network
+    environment: 
+      - DEFAULT_REGION=us-east-1
+      - DEBUG=1
+      - SERVICES=ssm
+      - PORT_WEB_UI=${PORT_WEB_UI- }
+    volumes:
+      - ./localstack-init:/docker-entrypoint-initaws.d
 
 networks: 
   env_network:

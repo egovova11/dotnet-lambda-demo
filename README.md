@@ -18,6 +18,8 @@
 
 ### publish layer
 
+**this part is outdated**
+
 > dotnet lambda publish-layer common-core --package-manifest ./common-core.xml --layer-type runtime-package-store --framework netcoreapp3.0 --s3-bucket malaga-serverless-net-demo --region eu-central-1
 
 thing above creates something not very usable.
@@ -30,6 +32,8 @@ so, lets try another way
 
 ### build database image
 
+**this part is outdated**
+
 > git clone https://github.com/egovova11/mssql-server-samplesdb sqlserverimage
 > cd sqlserverimage
 > git checkout adventureworkslt2017
@@ -39,6 +43,10 @@ so, lets try another way
 in different console do
 
 > docker commit sql_server_base awlt2017_image
+
+### prepare debugging environment
+
+> `./scripts/prepare-test-env.ps1`
 
 ## Variables
 
