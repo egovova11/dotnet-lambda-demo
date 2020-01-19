@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.TestUtilities;
@@ -9,11 +8,9 @@ using DotnetLambda30WithEf.Host.Diagnostics;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace DotnetLambda30WithEf.Host
 {
@@ -31,13 +28,17 @@ namespace DotnetLambda30WithEf.Host
         [UsedImplicitly]
         public void ConfigureServices(IServiceCollection services)
         {
+            var lazyConfiguration = new Lazy<IConfiguration>(
+                () => Configuration, 
+                LazyThreadSafetyMode.None);
             services.AddControllers();
-            services.AddSingleton(new Function());
-            services.AddSingleton<Func<string, ILambdaContext, Task<string>>>((provider) =>
+            services.AddSingleton<Function>(provider => 
+                new Function(lazyConfiguration));
+            services.AddSingleton<Func<string, ILambdaContext, Task<string>>>(provider =>
                 provider.GetRequiredService<Function>().FunctionHandler);
             services.AddSingleton<ILambdaContext, TestLambdaContext>();
 
-            DiagnosticListener.AllListeners.Subscribe(new ExampleDiagnosticObserver());
+            DiagnosticListener.AllListeners.Subscribe(new SqlDiagnosticsObserver());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace DotnetLambda30WithEf.Host.Diagnostics
 {
-    public sealed class ExampleDiagnosticObserver :
+    public sealed class SqlDiagnosticsObserver :
         IObserver<DiagnosticListener>,
         IObserver<KeyValuePair<string, object>>
     {

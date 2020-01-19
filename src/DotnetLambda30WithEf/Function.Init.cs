@@ -1,6 +1,5 @@
 ﻿using System;
 using Amazon;
-using Amazon.Extensions.Configuration.SystemsManager;
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using DotnetLambda30WithEf.Database;
@@ -16,15 +15,15 @@ namespace DotnetLambda30WithEf
     {
         [NotNull, ItemNotNull]
         private Lazy<IServiceProvider> ServiceProvider { get; }
-        
+
         [NotNull, ItemNotNull]
-        private static readonly Lazy<IServiceProvider> CommonServiceProvider = new Lazy<IServiceProvider>(CreateServiceProvider);
+        private Lazy<IConfiguration> Configuration { get; }
+
+        private static readonly Lazy<IConfiguration> DefaultConfiguration = new Lazy<IConfiguration>(GetDefaultConfiguration);
 
         [NotNull]
-        internal static IServiceProvider CreateServiceProvider()
+        internal static IServiceProvider CreateServiceProvider(IConfiguration configuration)
         {
-            var configuration = GetConfiguration();
-
             var services = new ServiceCollection();
 
             services.AddScoped<ICustomerSearchService, CustomerSearchService>();
@@ -38,57 +37,42 @@ namespace DotnetLambda30WithEf
             return provider;
         }
 
-        [NotNull]
-        private static IConfiguration GetConfiguration()
+        private static IConfiguration GetDefaultConfiguration()
         {
-            var envConfiguration = new ConfigurationBuilder().AddEnvironmentVariables().Build();
-            var environmentName = envConfiguration.GetValue<string>("ASPNETCORE_ENVIRONMENT");
-            envConfiguration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", true)
-                .AddJsonFile($"appsettings.{environmentName}.json", true)
+            var envConfiguration = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
                 .Build();
 
-            var awsConfiguration = envConfiguration.GetSection("AWS");
-            var ssmConfiguration = awsConfiguration.GetSection("SSM");
-            //var prefix = envConfiguration.GetValue<string>("service-parameter-prefix");
-            //var hostAndPort = envConfiguration.GetValue<string>("AWS_LAMBDA_RUNTIME_API");
-            // "/malaga-serverless-net-demo/vars"
+            var ssmPath = envConfiguration.GetValue<string>("AWS:SSM:Path");
+            var ssmRegion = envConfiguration.GetValue<string>("AWS:SSM:Region");
 
-            //var prov = new SystemsManagerConfigurationProvider(new SystemsManagerConfigurationSource
-            //{
-            //    OnLoadException = x => Console.WriteLine(x),
-            //    Prefix = "lambda-params",
-            //});
-            //prov.Load();
-
-            var configurationBuilder = new ConfigurationBuilder()
-                .AddSystemsManager(x =>
+            var combinedConfiguration = new ConfigurationBuilder()
+                .AddConfiguration(envConfiguration)
+                .AddSystemsManager(source =>
                 {
-                    //x.Prefix = "lambda-params";
-                    x.Path = ssmConfiguration.GetValue<string>("Path");
-                    x.AwsOptions = new AWSOptions
+                    source.Path = ssmPath;
+                    source.AwsOptions = new AWSOptions
                     {
-                        Region = RegionEndpoint.GetBySystemName(ssmConfiguration.GetValue<string>("Region")),
-                        Credentials = new BasicAWSCredentials("foo", "foo")
+                        Region = RegionEndpoint.GetBySystemName(ssmRegion),
                     };
-                    x.AwsOptions.DefaultClientConfig.ServiceURL = ssmConfiguration.GetValue<string>("ServiceUrl"); // "http://localhost:4583";
-                    x.AwsOptions.DefaultClientConfig.DisableLogging = false;
-                    x.AwsOptions.DefaultClientConfig.UseHttp = true;
-                });
-            return configurationBuilder.AddConfiguration(envConfiguration).Build();
+                    source.AwsOptions.DefaultClientConfig.DisableLogging = false;
+                })
+                .Build();
+            return combinedConfiguration;
         }
 
         /// <summary>
-        /// This interface is for testing purposes
+        /// Initializes function with custom-configuration. For testing purposes.
         /// </summary>
-        /// <param name="serviceProvider"></param>
-        internal Function(Lazy<IServiceProvider> serviceProvider)
+        /// <param name="configuration"></param>
+        internal Function(Lazy<IConfiguration> configuration)
         {
-            ServiceProvider = serviceProvider;
+            Configuration = configuration;
+            ServiceProvider = new Lazy<IServiceProvider>(() => CreateServiceProvider(configuration.Value));
         }
 
         [UsedImplicitly]
-        public Function() : this(CommonServiceProvider)
+        public Function() : this(DefaultConfiguration)
         {
 
         }
