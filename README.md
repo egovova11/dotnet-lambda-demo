@@ -61,3 +61,9 @@ in different console do
 > ERROR: for dotnetlambda21  Cannot start service dotnetlambda21: error while creating mount source path '/host_mnt/e/projects/dotnet-lambda-demo/src/output': mkdir /host_mnt/e: file exists
 
 Solution: go to docker settings -> shared drives -> Reset credentials, then reassign access to drives once again.
+
+2. If there are messages like "network xxx not found" during test setup
+
+ can be caused by artifacts of previous docker-compose run.
+
+ > docker system prune -a

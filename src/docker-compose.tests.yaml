@@ -1,28 +1,29 @@
 version: "3.7"
 
 services:  
-  dotnetlambda21:    
-    build: 
-      target: tests
-       
-  dotnetlambda30:
-    build: 
-      target: tests
+  # dotnetlambda21:    
+  #   build: 
+  #     target: tests
 
-  dotnetlambda21withef:
-    networks: 
-      - env_network
-    external_links:
-      - adventureworks
-    build: 
-      target: tests
+  # dotnetlambda21withef:
+  #   networks: 
+  #     - env_network
+  #   external_links:
+  #     - adventureworks
+  #   build: 
+  #     target: tests
 
   dotnetlambda30withef:
     networks: 
       - env_network
     external_links:
       - adventureworks
-    build: 
+      - awslocalstack
+    environment:
+      - AWS:SSM:Path=lambda-params
+      - AWS:SSM:Region=us-east-1
+      - AWS:SSM:ServiceUrl=http://host.docker.internal:4583
+    build:
       target: tests
 
 networks: 
