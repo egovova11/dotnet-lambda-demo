@@ -1,7 +1,6 @@
 ﻿using System;
 using Amazon;
 using Amazon.Extensions.NETCore.Setup;
-using Amazon.Runtime;
 using DotnetLambda30WithEf.Database;
 using DotnetLambda30WithEf.Services;
 using JetBrains.Annotations;
@@ -15,9 +14,6 @@ namespace DotnetLambda30WithEf
     {
         [NotNull, ItemNotNull]
         private Lazy<IServiceProvider> ServiceProvider { get; }
-
-        [NotNull, ItemNotNull]
-        private Lazy<IConfiguration> Configuration { get; }
 
         private static readonly Lazy<IConfiguration> DefaultConfiguration = new Lazy<IConfiguration>(GetDefaultConfiguration);
 
@@ -67,7 +63,6 @@ namespace DotnetLambda30WithEf
         /// <param name="configuration"></param>
         internal Function(Lazy<IConfiguration> configuration)
         {
-            Configuration = configuration;
             ServiceProvider = new Lazy<IServiceProvider>(() => CreateServiceProvider(configuration.Value));
         }
 

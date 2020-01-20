@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Amazon.Lambda.TestUtilities;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 
-namespace DotnetLambda30WithEf.Tests
+namespace DotnetLambda21WithEf.Tests
 {
     [TestFixture]
     public class IntegrationTests : IntegrationFixtureBase

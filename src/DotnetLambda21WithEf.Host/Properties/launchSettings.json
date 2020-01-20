@@ -1,0 +1,22 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:61407",
+      "sslPort": 0
+    }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/invoke?input=Adams",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "docker"
+      },
+      "httpPort": 61409
+    }
+  }
+}

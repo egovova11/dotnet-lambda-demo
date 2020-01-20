@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace DotnetLambda30WithEf.Host
+namespace DotnetLambda21WithEf.Host
 {
     public class Program
     {

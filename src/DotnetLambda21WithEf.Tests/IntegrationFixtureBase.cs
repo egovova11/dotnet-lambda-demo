@@ -4,7 +4,7 @@ using Amazon.Runtime;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 
-namespace DotnetLambda30WithEf.Tests
+namespace DotnetLambda21WithEf.Tests
 {
     public abstract class IntegrationFixtureBase
     {
