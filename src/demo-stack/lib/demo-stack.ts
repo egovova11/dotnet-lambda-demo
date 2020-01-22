@@ -18,7 +18,7 @@ export class DemoStack extends cdk.Stack {
     const ssmPolicyId = "demo-ssm-policy";
     const ssmAccessPolicy = new ManagedPolicy(this, ssmPolicyId, {
       statements: [
-        new PolicyStatement({          
+        new PolicyStatement({
           effect: Effect.ALLOW,
           actions: [
             "ssm:DescribeParameters",
@@ -29,10 +29,31 @@ export class DemoStack extends cdk.Stack {
       ]
     });
 
+    const rdsPolicyId = "demo-rds-policy";
+    const rdsAccessPolicy = new ManagedPolicy(this, rdsPolicyId, {
+      statements: [
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: [
+            "rds-data:ExecuteSql",
+            "rds-data:ExecuteStatement",
+            "rds-data:BatchExecuteStatement",
+            "rds-data:BeginTransaction",
+            "rds-data:CommitTransaction",
+            "rds-data:RollbackTransaction"
+          ]
+        })
+      ]
+    });
+
     const lambdaRoleId = "demo-lambda-role";
     const lambdaRole = new Role(this, lambdaRoleId, {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-      managedPolicies: [ssmAccessPolicy]
+      managedPolicies: [
+        ssmAccessPolicy,
+        rdsAccessPolicy,
+        ManagedPolicy.fromAwsManagedPolicyName("arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole")
+      ],
     });
 
     const codeBucketNameParameterId = `${id}-codebucket-parameter`

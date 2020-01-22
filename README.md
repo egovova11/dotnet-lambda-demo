@@ -50,7 +50,7 @@ in different console do
 
 ## Variables
 
-1. `/malaga-serverless-net-demo/vars/db-connection` - database connection string. AdventureWorksLT2017 schema is expected.
+1. `/malaga-serverless-net-demo/vars/DbConnectionString` - database connection string. AdventureWorksLT2017 schema is expected.
 
 ## Troubleshooting
 
