@@ -3,10 +3,16 @@ import s3 = require('@aws-cdk/aws-s3');
 import lambda = require('@aws-cdk/aws-lambda');
 import { DemoStackProps } from './demo-stack-props';
 import { CfnParameter } from '@aws-cdk/core';
+import { } from "@aws-cdk/aws-rds";
 
 export class DemoStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, appProps: DemoStackProps, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    const ssmParameters = {
+      "AWS:SSM:Region": "eu-central-1",
+      "AWS:SSM:Path": "/malaga-serverless-net-demo/vars/"
+    }
 
     const codeBucketNameParameterId = `${id}-codebucket-parameter`
     const codeBucketNameParameter = new CfnParameter(this, codeBucketNameParameterId, {
@@ -27,7 +33,7 @@ export class DemoStack extends cdk.Stack {
       runtime: lambda.Runtime.DOTNET_CORE_2_1,
       code: lambda.Code.fromBucket(codeBucket, dotnet21CodeKey),
       handler: 'DotnetLambda21::DotnetLambda21.Function::FunctionHandler'
-    });
+    }); 
 
     const dotnet21WithEfCodeKey = appProps.dotnet21WithEfFunctionPackage 
       ? appProps.dotnet21WithEfFunctionPackage
@@ -38,7 +44,10 @@ export class DemoStack extends cdk.Stack {
       functionName: 'dotnet21-with-ef-function',
       runtime: lambda.Runtime.DOTNET_CORE_2_1,
       code: lambda.Code.fromBucket(codeBucket, dotnet21WithEfCodeKey),
-      handler: 'DotnetLambda21WithEf::DotnetLambda21WithEf.Function::FunctionHandler'
+      handler: 'DotnetLambda21WithEf::DotnetLambda21WithEf.Function::FunctionHandler',
+      environment: {
+        ...ssmParameters
+      }
     });
 
     const dotnet30WithEfCodeKey = appProps.dotnet30WithEfFunctionPackage 
@@ -50,7 +59,10 @@ export class DemoStack extends cdk.Stack {
       functionName: 'dotnet30-with-ef-function',      
       code: lambda.Code.fromBucket(codeBucket, dotnet30WithEfCodeKey),
       handler: 'DotnetLambda30WithEf::DotnetLambda30WithEf.Function::FunctionHandler',
-      runtime: lambda.Runtime.PROVIDED
+      runtime: lambda.Runtime.PROVIDED,
+      environment: {
+        ...ssmParameters
+      }
     });
   }
 }
