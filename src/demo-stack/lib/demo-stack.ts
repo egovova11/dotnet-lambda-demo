@@ -3,16 +3,37 @@ import s3 = require('@aws-cdk/aws-s3');
 import lambda = require('@aws-cdk/aws-lambda');
 import { DemoStackProps } from './demo-stack-props';
 import { CfnParameter } from '@aws-cdk/core';
-import { } from "@aws-cdk/aws-rds";
+//import { } from "@aws-cdk/aws-rds";
+import { Role, ServicePrincipal, PolicyStatement, Effect, ManagedPolicy } from "@aws-cdk/aws-iam";
 
 export class DemoStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, appProps: DemoStackProps, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const ssmParameters = {
-      "AWS:SSM:Region": "eu-central-1",
-      "AWS:SSM:Path": "/malaga-serverless-net-demo/vars/"
+      "AWS_SSM_Region": "eu-central-1",
+      "AWS_SSM_Path": "/malaga-serverless-net-demo/vars/"
     }
+
+    const ssmPolicyId = "demo-ssm-policy";
+    const ssmAccessPolicy = new ManagedPolicy(this, ssmPolicyId, {
+      statements: [
+        new PolicyStatement({          
+          effect: Effect.ALLOW,
+          actions: [
+            "ssm:DescribeParameters",
+            "ssm:GetParameters",
+            "ssm:GetParameter"
+          ]
+        })
+      ]
+    });
+
+    const lambdaRoleId = "demo-lambda-role";
+    const lambdaRole = new Role(this, lambdaRoleId, {
+      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+      managedPolicies: [ssmAccessPolicy]
+    });
 
     const codeBucketNameParameterId = `${id}-codebucket-parameter`
     const codeBucketNameParameter = new CfnParameter(this, codeBucketNameParameterId, {
@@ -23,7 +44,7 @@ export class DemoStack extends cdk.Stack {
     const codeBucketArn = `arn:aws:s3:::${codeBucketNameParameter.value}`;
     const codeBucket = s3.Bucket.fromBucketArn(this, codeBucketId, codeBucketArn);
 
-    const dotnet21CodeKey = appProps.dotnet21FunctionPackage 
+    const dotnet21CodeKey = appProps.dotnet21FunctionPackage
       ? appProps.dotnet21FunctionPackage
       : "code/dotnetlambda21.zip";
 
@@ -33,9 +54,9 @@ export class DemoStack extends cdk.Stack {
       runtime: lambda.Runtime.DOTNET_CORE_2_1,
       code: lambda.Code.fromBucket(codeBucket, dotnet21CodeKey),
       handler: 'DotnetLambda21::DotnetLambda21.Function::FunctionHandler'
-    }); 
+    });
 
-    const dotnet21WithEfCodeKey = appProps.dotnet21WithEfFunctionPackage 
+    const dotnet21WithEfCodeKey = appProps.dotnet21WithEfFunctionPackage
       ? appProps.dotnet21WithEfFunctionPackage
       : "code/dotnetlambda21withef.zip";
 
@@ -45,21 +66,23 @@ export class DemoStack extends cdk.Stack {
       runtime: lambda.Runtime.DOTNET_CORE_2_1,
       code: lambda.Code.fromBucket(codeBucket, dotnet21WithEfCodeKey),
       handler: 'DotnetLambda21WithEf::DotnetLambda21WithEf.Function::FunctionHandler',
+      role: lambdaRole,
       environment: {
         ...ssmParameters
       }
     });
 
-    const dotnet30WithEfCodeKey = appProps.dotnet30WithEfFunctionPackage 
+    const dotnet30WithEfCodeKey = appProps.dotnet30WithEfFunctionPackage
       ? appProps.dotnet30WithEfFunctionPackage
       : "code/dotnetlambda30withef.zip";
 
     const dotnet30WithEfFunctionId = `${id}-dotnet30witheffunction`;
     const dotnet30WithEfFunction = new lambda.Function(this, dotnet30WithEfFunctionId, {
-      functionName: 'dotnet30-with-ef-function',      
+      functionName: 'dotnet30-with-ef-function',
       code: lambda.Code.fromBucket(codeBucket, dotnet30WithEfCodeKey),
       handler: 'DotnetLambda30WithEf::DotnetLambda30WithEf.Function::FunctionHandler',
       runtime: lambda.Runtime.PROVIDED,
+      role: lambdaRole,
       environment: {
         ...ssmParameters
       }

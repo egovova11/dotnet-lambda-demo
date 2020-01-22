@@ -39,8 +39,8 @@ namespace DotnetLambda30WithEf
                 .AddEnvironmentVariables()
                 .Build();
 
-            var ssmPath = envConfiguration.GetValue<string>("AWS:SSM:Path");
-            var ssmRegion = envConfiguration.GetValue<string>("AWS:SSM:Region");
+            var ssmPath = envConfiguration.GetValue<string>("AWS_SSM_Path");
+            var ssmRegion = envConfiguration.GetValue<string>("AWS_SSM_Region");
 
             var combinedConfiguration = new ConfigurationBuilder()
                 .AddConfiguration(envConfiguration)
