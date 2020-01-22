@@ -1,6 +1,8 @@
-$initialLocation = Get-Location
+$stage = "PREPARE TEST ENV"
 & "$PSScriptRoot\init-env.ps1"
+& "$PSScriptRoot\log-start-stage.ps1" $stage
 
+$initialLocation = Get-Location
 cd "$Env:src_dir\test-env"
 if (-not( Test-Path ".\temp\sqlserverimage\Dockerfile")) {
     mkdir temp
@@ -17,3 +19,5 @@ docker-compose -f .\docker-compose.yaml up -d
 Start-Sleep -s 30
 
 Set-Location $initialLocation
+
+& "$PSScriptRoot\log-finish-stage.ps1" $stage

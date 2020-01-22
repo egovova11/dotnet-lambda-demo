@@ -4,7 +4,7 @@ import lambda = require('@aws-cdk/aws-lambda');
 import { DemoStackProps } from './demo-stack-props';
 import { CfnParameter } from '@aws-cdk/core';
 
-export class DemoDotnet21Stack extends cdk.Stack {
+export class DemoStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, appProps: DemoStackProps, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -27,18 +27,6 @@ export class DemoDotnet21Stack extends cdk.Stack {
       runtime: lambda.Runtime.DOTNET_CORE_2_1,
       code: lambda.Code.fromBucket(codeBucket, dotnet21CodeKey),
       handler: 'DotnetLambda21::DotnetLambda21.Function::FunctionHandler'
-    });
-
-    const dotnet30CodeKey = appProps.dotnet30FunctionPackage 
-      ? appProps.dotnet30FunctionPackage
-      : "code/dotnetlambda30.zip";
-
-    const dotnet30FunctionId = `${id}-dotnet30function`;
-    const dotnet30Function = new lambda.Function(this, dotnet30FunctionId, {
-      functionName: 'dotnet30-hello-world-function',      
-      code: lambda.Code.fromBucket(codeBucket, dotnet30CodeKey),
-      handler: 'DotnetLambda30::DotnetLambda30.Function::FunctionHandler',
-      runtime: lambda.Runtime.PROVIDED,
     });
 
     const dotnet21WithEfCodeKey = appProps.dotnet21WithEfFunctionPackage 
