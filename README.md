@@ -67,3 +67,7 @@ Solution: go to docker settings -> shared drives -> Reset credentials, then reas
  can be caused by artifacts of previous docker-compose run.
 
  > docker system prune -a
+
+3. Build only target stage in docker
+
+Enable buildkit: add `"features": { "buildkit": true }` to `/etc/docker/daemon.json` (https://docs.docker.com/develop/develop-images/build_enhancements/)
