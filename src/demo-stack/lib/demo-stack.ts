@@ -23,8 +23,10 @@ export class DemoStack extends cdk.Stack {
           actions: [
             "ssm:DescribeParameters",
             "ssm:GetParameters",
-            "ssm:GetParameter"
-          ]
+            "ssm:GetParameter",
+            "ssm:GetParametersByPath"
+          ],
+          resources: ["*"]
         })
       ]
     });
@@ -41,7 +43,8 @@ export class DemoStack extends cdk.Stack {
             "rds-data:BeginTransaction",
             "rds-data:CommitTransaction",
             "rds-data:RollbackTransaction"
-          ]
+          ],
+          resources: ["*"]
         })
       ]
     });
@@ -52,7 +55,7 @@ export class DemoStack extends cdk.Stack {
       managedPolicies: [
         ssmAccessPolicy,
         rdsAccessPolicy,
-        ManagedPolicy.fromAwsManagedPolicyName("arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole")
+        ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole")
       ],
     });
 
