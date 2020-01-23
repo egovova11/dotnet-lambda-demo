@@ -10,8 +10,8 @@ export class DemoStack extends cdk.Stack {
     super(scope, id, props);
 
     const ssmParameters = {
-      "AWS:SSM:Region": "eu-central-1",
-      "AWS:SSM:Path": "/malaga-serverless-net-demo/vars/"
+      "AWS_SSM_Region": "eu-central-1",
+      "AWS_SSM_Path": "/malaga-serverless-net-demo/vars/"
     }
 
     const codeBucketNameParameterId = `${id}-codebucket-parameter`
@@ -45,6 +45,8 @@ export class DemoStack extends cdk.Stack {
       runtime: lambda.Runtime.DOTNET_CORE_2_1,
       code: lambda.Code.fromBucket(codeBucket, dotnet21WithEfCodeKey),
       handler: 'DotnetLambda21WithEf::DotnetLambda21WithEf.Function::FunctionHandler',
+      timeout: cdk.Duration.minutes(1),
+      memorySize: 512,
       environment: {
         ...ssmParameters
       }
@@ -60,6 +62,8 @@ export class DemoStack extends cdk.Stack {
       code: lambda.Code.fromBucket(codeBucket, dotnet30WithEfCodeKey),
       handler: 'DotnetLambda30WithEf::DotnetLambda30WithEf.Function::FunctionHandler',
       runtime: lambda.Runtime.PROVIDED,
+      timeout: cdk.Duration.minutes(1),
+      memorySize: 512,
       environment: {
         ...ssmParameters
       }
