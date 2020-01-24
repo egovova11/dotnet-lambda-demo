@@ -4,7 +4,7 @@ $stage = "CDK SYNTH"
 
 $initialLocation = Get-Location
 cd $Env:stack_dir
-& $Env:cdk synth
+& $Env:cdk synth -v
 Set-Location $initialLocation
 
 & "$PSScriptRoot\log-finish-stage.ps1" $stage

@@ -3,7 +3,6 @@ import s3 = require('@aws-cdk/aws-s3');
 import lambda = require('@aws-cdk/aws-lambda');
 import { DemoStackProps } from './demo-stack-props';
 import { CfnParameter } from '@aws-cdk/core';
-//import { } from "@aws-cdk/aws-rds";
 import { Role, ServicePrincipal, PolicyStatement, Effect, ManagedPolicy } from "@aws-cdk/aws-iam";
 
 export class DemoStack extends cdk.Stack {
@@ -31,31 +30,12 @@ export class DemoStack extends cdk.Stack {
       ]
     });
 
-    const rdsPolicyId = "demo-rds-policy";
-    const rdsAccessPolicy = new ManagedPolicy(this, rdsPolicyId, {
-      statements: [
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          actions: [
-            "rds-data:ExecuteSql",
-            "rds-data:ExecuteStatement",
-            "rds-data:BatchExecuteStatement",
-            "rds-data:BeginTransaction",
-            "rds-data:CommitTransaction",
-            "rds-data:RollbackTransaction"
-          ],
-          resources: ["*"]
-        })
-      ]
-    });
-
     const lambdaRoleId = "demo-lambda-role";
     const lambdaRole = new Role(this, lambdaRoleId, {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
         ssmAccessPolicy,
-        rdsAccessPolicy,
-        ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole")
+        ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaVPCAccessExecutionRole")
       ],
     });
 

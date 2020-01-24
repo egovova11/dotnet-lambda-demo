@@ -71,3 +71,11 @@ Solution: go to docker settings -> shared drives -> Reset credentials, then reas
 3. Build only target stage in docker
 
 Enable buildkit: add `"features": { "buildkit": true }` to `/etc/docker/daemon.json` (https://docs.docker.com/develop/develop-images/build_enhancements/)
+
+4. "Not possible to place Lambda Functions in a Public subnet" during CDK synth
+
+Workaround: create new vpc and non-default subnet
+
+5. If cdk caches query results, the cache can be reset via
+
+> `cdk context --reset <key>`

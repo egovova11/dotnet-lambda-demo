@@ -5,6 +5,8 @@ $Env:src_dir = "$PSScriptRoot\..\src"
 $Env:output_dir = "$PSScriptRoot\..\src\output"
 $Env:stack_dir = "$PSScriptRoot\..\src\demo-stack"
 $Env:CODE_BUCKET_NAME = "malaga-serverless-net-demo"
+$Env:AWS_ACCOUNT = "805763676908"
+$Env:AWS_REGION = "eu-central-1"
 if ($Env:code_version -ne $null)
 {
     $Env:dotnet21functionPackage = "code/dotnetlambda21-$Env:code_version.zip"
