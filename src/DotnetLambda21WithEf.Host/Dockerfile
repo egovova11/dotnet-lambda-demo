@@ -1,7 +1,8 @@
-FROM mcr.microsoft.com/dotnet/core/runtime:2.1-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.1-stretch-slim AS base
 WORKDIR /app
+EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/core/sdk:2.1-buster AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.1-stretch AS build
 WORKDIR /src
 COPY ["DotnetLambda21WithEf.Host/DotnetLambda21WithEf.Host.csproj", "DotnetLambda21WithEf.Host/"]
 RUN dotnet restore "DotnetLambda21WithEf.Host/DotnetLambda21WithEf.Host.csproj"

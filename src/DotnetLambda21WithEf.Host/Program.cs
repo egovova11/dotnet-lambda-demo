@@ -1,10 +1,9 @@
-using Amazon;
+﻿using Amazon;
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
-using JetBrains.Annotations;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 namespace DotnetLambda21WithEf.Host
 {
@@ -12,19 +11,17 @@ namespace DotnetLambda21WithEf.Host
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
-                .ConfigureHostConfiguration(Configure)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseConfiguration(Configure())
+                .UseStartup<Startup>();
 
-        private static void Configure([NotNull] IConfigurationBuilder configurationBuilder)
+        private static IConfiguration Configure()
         {
+            var configurationBuilder = new ConfigurationBuilder();
             var envConfiguration = configurationBuilder
                 .AddEnvironmentVariables()
                 .Build();
@@ -51,6 +48,7 @@ namespace DotnetLambda21WithEf.Host
                 source.AwsOptions.DefaultClientConfig.DisableLogging = false;
                 source.AwsOptions.DefaultClientConfig.UseHttp = true;
             });
+            return configurationBuilder.Build();
         }
     }
 }

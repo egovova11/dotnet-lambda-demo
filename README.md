@@ -79,3 +79,11 @@ Workaround: create new vpc and non-default subnet
 5. If cdk caches query results, the cache can be reset via
 
 > `cdk context --reset <key>`
+
+6. "Docker command failed with exit code 0"
+
+See https://github.com/microsoft/DockerTools/issues/213
+- check you have buildkit in docker enabled
+- update VS to 16.4
+- Microsoft.VisualStudio.Azure.Containers.Tools.Targets to 1.9.7+
+
