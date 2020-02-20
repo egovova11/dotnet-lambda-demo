@@ -16,37 +16,13 @@
 1. Modify `./scripts/init-env.ps1` to use your bucket name
 2. run `./scripts/build-synth-deploy.ps1`
 
-### publish layer
-
-**this part is outdated**
-
-> dotnet lambda publish-layer common-core --package-manifest ./common-core.xml --layer-type runtime-package-store --framework netcoreapp3.0 --s3-bucket malaga-serverless-net-demo --region eu-central-1
-
-thing above creates something not very usable.
-so, lets try another way
-
-- download `https://dotnetcli.azureedge.net/dotnet/Runtime/3.0.1/dotnet-runtime-3.0.1-linux-x64.tar.gz` (it is from official docker image)
-- untar and zip
-  - and here we need to set correct execution rights for dotnet entry point!
-- push to the layers
-
-### build database image
-
-**this part is outdated**
-
-> git clone https://github.com/egovova11/mssql-server-samplesdb sqlserverimage
-> cd sqlserverimage
-> git checkout adventureworkslt2017
-> docker-compose -f .\docker-compose.sql2017.yml build
-> docker-compose -f .\docker-compose.sql2017.yml up
-
-in different console do
-
-> docker commit sql_server_base awlt2017_image
-
 ### prepare debugging environment
 
 > `./scripts/prepare-test-env.ps1`
+
+### run tests
+
+> `./scripts/run-tests.ps1`
 
 ## Variables
 
@@ -71,6 +47,7 @@ Solution: go to docker settings -> shared drives -> Reset credentials, then reas
 3. Build only target stage in docker
 
 Enable buildkit: add `"features": { "buildkit": true }` to `/etc/docker/daemon.json` (https://docs.docker.com/develop/develop-images/build_enhancements/)
+!!! this breakes debugging in VS and Rider !!!
 
 4. "Not possible to place Lambda Functions in a Public subnet" during CDK synth
 
@@ -83,7 +60,7 @@ Workaround: create new vpc and non-default subnet
 6. "Docker command failed with exit code 0"
 
 See https://github.com/microsoft/DockerTools/issues/213
-- check you have buildkit in docker enabled
+- check you have buildkit in docker enabled (disable it!)
 - update VS to 16.4
 - Microsoft.VisualStudio.Azure.Containers.Tools.Targets to 1.9.7+
 
